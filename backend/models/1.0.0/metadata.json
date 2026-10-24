@@ -1,0 +1,111 @@
+{
+  "model_version": "1.0.0",
+  "trained_at": "2026-10-24T05:59:31.206071+00:00",
+  "algorithm": "XGBClassifier",
+  "features": [
+    "amt",
+    "hour",
+    "day_of_week",
+    "is_night",
+    "distance_km",
+    "city_pop",
+    "cat_entertainment",
+    "cat_food_dining",
+    "cat_gas_transport",
+    "cat_grocery_net",
+    "cat_grocery_pos",
+    "cat_health_fitness",
+    "cat_home",
+    "cat_kids_pets",
+    "cat_misc_net",
+    "cat_misc_pos",
+    "cat_personal_care",
+    "cat_shopping_net",
+    "cat_shopping_pos",
+    "cat_travel"
+  ],
+  "categories": [
+    "entertainment",
+    "food_dining",
+    "gas_transport",
+    "grocery_net",
+    "grocery_pos",
+    "health_fitness",
+    "home",
+    "kids_pets",
+    "misc_net",
+    "misc_pos",
+    "personal_care",
+    "shopping_net",
+    "shopping_pos",
+    "travel"
+  ],
+  "imbalance": {
+    "chosen": "none",
+    "scale_pos_weight": 1.0,
+    "validation_pr_auc_by_option": {
+      "none": 0.8501460024947852,
+      "sqrt": 0.8445884777068297,
+      "full": 0.8154947391972542
+    }
+  },
+  "thresholds": {
+    "review": 0.2022014707326889,
+    "decline": 0.630313515663147
+  },
+  "targets": {
+    "decline_precision": 0.9,
+    "review_recall": 0.8
+  },
+  "split": {
+    "validation_start": "2020-04-21",
+    "fit_rows": 1142581,
+    "validation_rows": 154094,
+    "test_rows": 555719
+  },
+  "metrics": {
+    "validation": {
+      "pr_auc": 0.8501460024947852,
+      "baseline_pr_auc": 0.0062169844380702685,
+      "counts": {
+        "Approve": 153063,
+        "Review": 364,
+        "Decline": 667
+      },
+      "decline": {
+        "count": 667,
+        "fraud_caught": 601,
+        "precision": 0.9010494752623688,
+        "recall": 0.627348643006263
+      },
+      "flagged": {
+        "count": 1031,
+        "fraud_caught": 767,
+        "precision": 0.7439379243452958,
+        "recall": 0.8006263048016702
+      }
+    },
+    "test": {
+      "pr_auc": 0.7935799132415051,
+      "baseline_pr_auc": 0.0038598644278853163,
+      "counts": {
+        "Approve": 553080,
+        "Review": 1127,
+        "Decline": 1512
+      },
+      "decline": {
+        "count": 1512,
+        "fraud_caught": 1285,
+        "precision": 0.8498677248677249,
+        "recall": 0.5990675990675991
+      },
+      "flagged": {
+        "count": 2639,
+        "fraud_caught": 1666,
+        "precision": 0.6312997347480106,
+        "recall": 0.7766899766899766
+      }
+    }
+  },
+  "note": "Trained on public SIMULATED data (Sparkov). Not proof of real-world accuracy."
+}
