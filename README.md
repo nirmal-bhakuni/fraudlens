@@ -21,3 +21,12 @@ Day 1: project setup and data inspection.
 3. Unzip it so these files are in `data/raw/`:
    - `fraudTrain.csv`
    - `fraudTest.csv`
+
+## Known model behavior (read before trusting scores)
+- The model learned patterns of the simulator that made the data. For example, small
+  gas_transport payments ($10-20) are fraud 95.7% of the time in the training file
+  (308 of 322 rows). Real life is not like that.
+- Scores jump sharply between nearby amounts (tree model).
+- Fraud rate dropped from 0.58% (train) to 0.39% (test), so precision on test is lower than on validation.
+- About 22% of fraud in the test set is still approved (479 of 2,145).
+- Results do NOT prove real-world accuracy.   
