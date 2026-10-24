@@ -6,6 +6,8 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from app import models  # noqa: F401  (imported so the table is registered)
+from app.auth import require_client
+from app.config import API_KEYS, APP_ENV, DEFAULT_DEV_API_KEY
 from app.db import Base, engine, get_db
 from app.ml.scorer import get_scorer
 from app.routers import transactions
@@ -13,12 +15,14 @@ from app.routers import transactions
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    if APP_ENV == "prod" and DEFAULT_DEV_API_KEY in API_KEYS:
+        raise RuntimeError("Refusing to start in prod with the default dev API key. Set API_KEYS.")
     Base.metadata.create_all(engine)  # create tables if missing
     get_scorer()                      # load the model now, so a bad model fails at startup
     yield
 
 
-app = FastAPI(title="FraudLens", version="0.1.0", lifespan=lifespan)
+app = FastAPI(title="FraudLens", version="0.2.0", lifespan=lifespan)
 app.include_router(transactions.router)
 
 
@@ -26,3 +30,9 @@ app.include_router(transactions.router)
 def health(db: Session = Depends(get_db)):
     db.execute(text("SELECT 1"))  # proves the database is reachable
     return {"status": "ok", "model_version": get_scorer().version}
+
+
+@app.get("/auth/check")
+def auth_check(client_id: str = Depends(require_client)):
+    """The login screen calls this to see if an API key works."""
+    return {"status": "ok", "client_id": client_id}

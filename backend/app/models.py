@@ -1,7 +1,7 @@
 """Database table for scored transactions."""
 from datetime import datetime, timezone
 
-from sqlalchemy import JSON, Boolean, DateTime, Float, Integer, String
+from sqlalchemy import JSON, Boolean, DateTime, Float, Integer, String, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db import Base
@@ -13,9 +13,18 @@ def utcnow() -> datetime:
 
 class Transaction(Base):
     __tablename__ = "transactions"
+    # The database itself stops duplicates. This also makes the lookup fast.
+    __table_args__ = (
+        UniqueConstraint("client_id", "idempotency_key", name="uq_client_idempotency"),
+    )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utcnow, index=True)
+
+    # Who sent it, and the idempotency data
+    client_id: Mapped[str] = mapped_column(String(16), index=True)
+    idempotency_key: Mapped[str] = mapped_column(String(100))
+    request_hash: Mapped[str] = mapped_column(String(64))  # detects same key + different body
 
     # What the caller sent
     trans_time: Mapped[datetime] = mapped_column(DateTime, index=True)

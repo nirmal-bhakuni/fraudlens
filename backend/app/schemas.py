@@ -2,13 +2,14 @@
 from datetime import datetime
 from typing import Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from app.ml.features import CATEGORIES
 
 # Literal[("a", "b")] means the same as Literal["a", "b"].
 # A wrong category gives a clear error that lists the allowed values.
 Category = Literal[tuple(CATEGORIES)]
+Decision = Literal["Approve", "Review", "Decline"]
 
 
 class TransactionIn(BaseModel):
@@ -26,6 +27,36 @@ class TransactionIn(BaseModel):
 class ScoreOut(BaseModel):
     id: int
     risk_score: float
-    decision: Literal["Approve", "Review", "Decline"]
+    decision: Decision
     rules_triggered: list[str]
     model_version: str
+
+
+class TransactionOut(BaseModel):
+    """A saved transaction, as shown in the list and detail endpoints."""
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    created_at: datetime
+    timestamp: datetime = Field(validation_alias="trans_time")
+    amount: float
+    category: str
+    merchant: str | None
+    lat: float
+    long: float
+    merchant_lat: float
+    merchant_long: float
+    city_pop: int
+    risk_score: float
+    model_decision: Decision
+    decision: Decision
+    flagged: bool
+    rules_triggered: list[str]
+    model_version: str
+
+
+class TransactionPage(BaseModel):
+    items: list[TransactionOut]
+    total: int
+    limit: int
+    offset: int
