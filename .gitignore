@@ -1,0 +1,24 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Secrets
+.env
+
+# Data: never commit
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+
+# Frontend (later)
+node_modules/
+dist/
+
+# Editors / OS
+.vscode/
+.DS_Store
+Thumbs.db
