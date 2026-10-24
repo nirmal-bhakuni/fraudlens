@@ -1,0 +1,3 @@
+# Night purchases
+
+Purchases made late at night or in the early morning are riskier in this system. In the training data, about 2% of transactions between 22:00 and 03:59 were fraud, compared with about 0.1% during the rest of the day. The model uses the hour of the day and an "is night" flag. A night purchase alone does not decide the outcome: the amount and the category matter too. The data is simulated, so real-world timing may differ.

@@ -1,0 +1,3 @@
+# Model limits
+
+The model was trained on public, simulated data, so the results do not prove real-world accuracy. On the later test period it flagged about 0.47% of transactions and caught about 78% of fraud, but about 22% of fraud (479 of 2,145 cases) was still approved. The fraud rate fell from 0.58% in training to 0.39% in the test period, which lowers precision. Scores rank risk. They are not exact probabilities.    

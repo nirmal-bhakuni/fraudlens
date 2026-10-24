@@ -1,0 +1,3 @@
+# How decisions are made
+
+The ML model gives each transaction a risk score from 0 to 1. For model version 1.0.0, a score of 0.2022 or higher means Review, a score of 0.6303 or higher means Decline, and anything lower is Approved. These thresholds were chosen on validation data: Decline is where about 90% of declined transactions were fraud, and Review is set so that flagged transactions catch about 80% of fraud. The model decides. The AI explanation only explains the decision and never changes it.

@@ -8,7 +8,7 @@ from app.config import DEFAULT_DEV_API_KEY
 from app.db import Base, get_db
 from app.main import app
 from app.ratelimit import rate_limiter
-
+from app.models import Transaction
 
 @pytest.fixture(autouse=True)
 def isolated_settings(monkeypatch):
@@ -26,7 +26,7 @@ def session_factory():
     engine = create_engine(
         "sqlite://", connect_args={"check_same_thread": False}, poolclass=StaticPool
     )
-    Base.metadata.create_all(engine)
+    Base.metadata.create_all(engine, tables=[Transaction.__table__])
     return sessionmaker(bind=engine, autoflush=False)
 
 

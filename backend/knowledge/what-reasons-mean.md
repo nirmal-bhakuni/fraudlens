@@ -1,0 +1,3 @@
+# What the reasons mean
+
+Each reason shows how much one input pushed the score up or down, using a method called SHAP (TreeSHAP for tree models). The impact is in log-odds units, not percentage points. A positive impact increases risk. Reasons explain the model, not the real cause of fraud. Some reasons look odd, such as "Category is not shopping_pos", because the model sees each category as a separate yes/no input.

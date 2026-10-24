@@ -1,0 +1,3 @@
+# Small test payments
+
+Criminals sometimes make a small purchase to check whether a stolen card works before a bigger one. In this project's training data, small gas_transport payments were almost always fraud (308 of 322 payments between $10 and $20). This is very likely a pattern created by the data simulator, not typical real-life behaviour. A high score on a small gas payment says more about the training data than about real gas stations.

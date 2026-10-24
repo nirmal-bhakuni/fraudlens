@@ -19,3 +19,10 @@ API_KEYS = [
     k.strip() for k in os.getenv("API_KEYS", DEFAULT_DEV_API_KEY).split(",") if k.strip()
 ]
 RATE_LIMIT_PER_MINUTE = int(os.getenv("RATE_LIMIT_PER_MINUTE", "120"))
+
+# RAG
+KNOWLEDGE_DIR = Path(os.getenv("KNOWLEDGE_DIR", BASE_DIR / "knowledge"))
+RAG_TOP_K = int(os.getenv("RAG_TOP_K", "4"))
+# Below this similarity we say "I don't have enough information".
+# 0.30 is a first guess. We calibrate it with real scores and the evaluation set.
+RAG_MIN_SCORE = float(os.getenv("RAG_MIN_SCORE", "0.30"))
