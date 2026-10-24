@@ -23,12 +23,18 @@ class TransactionIn(BaseModel):
     merchant_long: float = Field(ge=-180, le=180)
     city_pop: int = Field(ge=0, description="Population of the cardholder's city")
 
+class Reason(BaseModel):
+    feature: str
+    text: str
+    direction: Literal["increases risk", "decreases risk"]
+    impact: float = Field(description="Effect on the score in log-odds units, not probability")
 
 class ScoreOut(BaseModel):
     id: int
     risk_score: float
     decision: Decision
     rules_triggered: list[str]
+    reasons: list[Reason]
     model_version: str
 
 
@@ -52,6 +58,7 @@ class TransactionOut(BaseModel):
     decision: Decision
     flagged: bool
     rules_triggered: list[str]
+    reasons: list[Reason]
     model_version: str
 
 

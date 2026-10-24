@@ -13,6 +13,7 @@ from app.auth import require_client
 from app.db import get_db
 from app.ml.features import build_features
 from app.ml.scorer import Scorer, get_scorer
+from app.ml.reasons import top_reasons
 from app.models import Transaction
 from app.rules import apply_rules, check_rules
 from app.schemas import Decision, ScoreOut, TransactionIn, TransactionOut, TransactionPage
@@ -36,6 +37,7 @@ def to_score_out(row: Transaction) -> ScoreOut:
         id=row.id,
         risk_score=round(row.risk_score, 4),
         decision=row.decision,
+        reasons=row.reasons,
         rules_triggered=row.rules_triggered,
         model_version=row.model_version,
     )
@@ -90,6 +92,8 @@ def score_transaction(
     model_decision = scorer.decide(risk_score)
     hits = check_rules(payload.amount, bool(features["is_night"].iloc[0]))
     decision = apply_rules(model_decision, hits)  # ...rules can only be stricter
+    contributions, _bias = scorer.contributions(features)
+    reasons = top_reasons(contributions, features)
 
     row = Transaction(
         client_id=client_id,
@@ -109,6 +113,7 @@ def score_transaction(
         decision=decision,
         flagged=decision != "Approve",
         rules_triggered=hits,
+        reasons=reasons,
         model_version=scorer.version,
     )
     db.add(row)

@@ -43,4 +43,5 @@ class Transaction(Base):
     decision: Mapped[str] = mapped_column(String(10))        # final, after rules
     flagged: Mapped[bool] = mapped_column(Boolean, index=True)
     rules_triggered: Mapped[list] = mapped_column(JSON)
+    reasons: Mapped[list] = mapped_column(JSON, default=list)  # top SHAP reasons
     model_version: Mapped[str] = mapped_column(String(20))

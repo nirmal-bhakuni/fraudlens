@@ -3,6 +3,7 @@ import json
 from functools import lru_cache
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import xgboost as xgb
 
@@ -31,6 +32,16 @@ class Scorer:
         if score >= self.review_threshold:
             return "Review"
         return "Approve"
+
+    def contributions(self, features: pd.DataFrame) -> tuple[np.ndarray, float]:
+        """TreeSHAP values for a one-row feature table.
+
+        Returns (one value per feature, bias). Values are in log-odds units:
+        bias + sum(values) is the model's raw output, and sigmoid of that is the score.
+        """
+        dmatrix = xgb.DMatrix(features)
+        values = self.model.get_booster().predict(dmatrix, pred_contribs=True)
+        return values[0, :-1], float(values[0, -1])
 
 
 @lru_cache
