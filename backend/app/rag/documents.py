@@ -18,7 +18,7 @@ def load_documents(docs_dir: Path) -> list[Document]:
         raise ValueError(f"No .md files found in {docs_dir}")
     documents = []
     for path in files:
-        lines = path.read_text(encoding="utf-8").strip().splitlines()
+        lines = path.read_text(encoding="utf-8-sig").strip().splitlines()
         if not lines or not lines[0].startswith("# "):
             raise ValueError(f"{path.name}: the first line must be '# Title'")
         documents.append(Document(

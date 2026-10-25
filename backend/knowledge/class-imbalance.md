@@ -1,0 +1,3 @@
+# Class imbalance
+
+Fraud is rare in this data: 0.579% of the training transactions (7,506 of 1,296,675) and 0.386% of the test transactions (2,145 of 555,719). A model that always answers "not fraud" would be 99.421% accurate on the training data and still catch nothing, so we do not use accuracy. We compared three weights for the fraud class (none, square-root and full) using PR-AUC on validation data. No extra weight scored best (0.850), then square-root (0.845), then full weighting (0.815), so the final model uses no extra weight. We did not use SMOTE or other methods that invent fake transactions.

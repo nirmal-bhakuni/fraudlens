@@ -1,6 +1,6 @@
 {
   "model_version": "1.0.0",
-  "trained_at": "2026-10-24T05:59:31.206071+00:00",
+  "trained_at": "2026-10-25T04:39:15.335903+00:00",
   "algorithm": "XGBClassifier",
   "features": [
     "amt",

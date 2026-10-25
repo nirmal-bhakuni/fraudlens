@@ -1,0 +1,3 @@
+# Time-based evaluation
+
+The data is split by time and not at random, because a real system predicts the future from the past. The training file runs from January 2019 to 21 June 2020. Its last two months, from 21 April 2020, were set aside as validation data, which we used to choose the decision thresholds. The test file runs from 21 June 2020 to the end of 2020 and was used once, after the thresholds were fixed. A random split would let the model see future patterns and make the results look better than they are. Test results are lower than validation results, partly because the fraud rate fell from 0.58% in training to 0.39% in the test period.

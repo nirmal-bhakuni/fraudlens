@@ -56,3 +56,18 @@ Day 1: project setup and data inspection.
 - Demo data: `python scripts\seed_demo.py`.
 - The embedding model is downloaded while building the image. The API container runs as a non-root user.
 - Known limits: the knowledge documents are re-loaded on every API start; the dev database password is in docker-compose.yml.
+
+## Evaluation (retrieval)
+- `python -m app.rag.evaluate` scores retrieval on 45 questions (37 answerable, 8 that should be refused).
+  No LLM is called. The knowledge base has 19 documents, each stored as one chunk.
+- Split: "dev" questions choose the similarity cutoff, "test" questions check it afterwards.
+- Settings: cutoff 0.30, top-k 4. The cutoff is a plateau, not a clear peak: dev scores the same from 0.30 to 0.35
+  and falls to 69.6% at 0.40.
+- Results at cutoff 0.30: overall 88.9% (40/45). Answerable 91.9% (34/37). Off-topic questions refused
+  correctly 75% (6/8). Right document first 81.1%, MRR 0.88. Dev 87.0% (20/23), test 90.9% (20/22).
+- Known failures: a document that mixes several topics is retrieved poorly (q33), one correct match scored
+  just below the cutoff (q36), and off-topic questions that share words with our documents can pass the cutoff
+  (u03, u08). The prompt tells the model to say "I don't have enough information" in that case.
+- Limits: the questions and documents were written by the same person from the same facts, so the score is
+  optimistic. About 22 questions per split, so one question moves a score by ~4.5 points. It does not check
+  whether the AI's wording is correct, and it does not cover the default "Explain this decision" query.

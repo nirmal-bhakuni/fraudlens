@@ -1,0 +1,3 @@
+# Limits of the AI explanation
+
+The AI explanation is written by a language model (Gemini) and only explains a decision that the ML model and the rules already made. It cannot change a decision, and a test checks that the stored transaction stays the same after an explanation. The language model can still word things badly, so the dashboard shows the sources: the knowledge passages that were given to it. If no passage is similar enough to the question (similarity below 0.30), the system says it does not have enough information and does not call the AI. If the main AI model is busy, a second model answers. Explanations are not saved yet, so each click makes a new request.

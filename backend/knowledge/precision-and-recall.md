@@ -1,0 +1,3 @@
+# Precision and recall
+
+Precision is the share of flagged transactions that really were fraud. Recall is the share of all fraud that we flagged. On the test period, 2,639 transactions were flagged (Review or Decline). Of these, 1,666 were fraud, so precision was 63.1% and recall was 77.7% of the 2,145 fraud cases. For Decline alone, 1,512 transactions were declined and 1,285 of them were fraud, so precision was 85.0% and recall was 59.9%. Raising a threshold usually raises precision and lowers recall, and lowering it does the opposite. Test precision was below the validation results, where Decline reached 90.1%.
