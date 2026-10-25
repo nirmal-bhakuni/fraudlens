@@ -9,7 +9,7 @@ from app.auth import require_client
 from app.config import API_KEYS, APP_ENV, DEFAULT_DEV_API_KEY
 from app.db import get_db, init_db
 from app.ml.scorer import get_scorer
-from app.routers import transactions
+from app.routers import explain, transactions
 
 
 @asynccontextmanager
@@ -21,8 +21,9 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(title="FraudLens", version="0.3.0", lifespan=lifespan)
+app = FastAPI(title="FraudLens", version="0.4.0", lifespan=lifespan)
 app.include_router(transactions.router)
+app.include_router(explain.router)
 
 
 @app.get("/health")

@@ -23,11 +23,13 @@ class TransactionIn(BaseModel):
     merchant_long: float = Field(ge=-180, le=180)
     city_pop: int = Field(ge=0, description="Population of the cardholder's city")
 
+
 class Reason(BaseModel):
     feature: str
     text: str
     direction: Literal["increases risk", "decreases risk"]
     impact: float = Field(description="Effect on the score in log-odds units, not probability")
+
 
 class ScoreOut(BaseModel):
     id: int
@@ -67,3 +69,28 @@ class TransactionPage(BaseModel):
     total: int
     limit: int
     offset: int
+
+
+class ExplainIn(BaseModel):
+    model_config = ConfigDict(str_strip_whitespace=True)
+
+    question: str | None = Field(
+        default=None, min_length=3, max_length=300,
+        description="Optional. Leave empty to ask why this transaction got its decision.",
+    )
+
+
+class Source(BaseModel):
+    source: str
+    title: str
+    score: float
+    text: str
+
+
+class ExplainOut(BaseModel):
+    transaction_id: int
+    decision: Decision          # unchanged: the explanation never changes it
+    answered: bool              # False = "I don't have enough information"
+    answer: str
+    sources: list[Source]       # the passages that were given to the model
+    llm_model: str | None       # None when the LLM was not called

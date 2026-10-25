@@ -30,3 +30,15 @@ Day 1: project setup and data inspection.
 - Fraud rate dropped from 0.58% (train) to 0.39% (test), so precision on test is lower than on validation.
 - About 22% of fraud in the test set is still approved (479 of 2,145).
 - Results do NOT prove real-world accuracy.   
+## Ask why (RAG)
+- `POST /transactions/{id}/explain` searches the knowledge documents (pgvector), then asks an LLM to explain.
+- The ML model and rules decide. The LLM only explains. A test checks the transaction is unchanged.
+- If no passage is relevant (similarity below 0.30), the API answers "I don't have enough information"
+  and does not call the LLM. The 0.30 cutoff is a first guess, tuned later with the evaluation set.
+- `sources` are the passages given to the model. The answer may use only some of them.
+- Provider: Gemini REST `generateContent` (Google's docs call it "legacy"), model `gemini-3-flash-preview`.
+  Preview models can be retired, so the model name is a setting.
+- Safety around the LLM: retry on 503, a fallback model, thinking limited, and a cut-off answer is an
+  error, never shown as complete. The merchant name is never sent to the LLM.
+- Not done yet: explanations are not cached, and free-tier limits apply.
+- Dataset license: see the Kaggle page (write the exact text here).

@@ -2,7 +2,12 @@
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
 BASE_DIR = Path(__file__).resolve().parents[1]  # the backend folder
+
+# Reads backend/.env if it exists. Real environment variables win over the file.
+load_dotenv(BASE_DIR / ".env")
 
 DATABASE_URL = os.getenv(
     "DATABASE_URL",
@@ -26,3 +31,12 @@ RAG_TOP_K = int(os.getenv("RAG_TOP_K", "4"))
 # Below this similarity we say "I don't have enough information".
 # 0.30 is a first guess. We calibrate it with real scores and the evaluation set.
 RAG_MIN_SCORE = float(os.getenv("RAG_MIN_SCORE", "0.30"))
+
+# LLM (Gemini). The key stays in .env or in the host's secret settings, never in code.
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY", "")
+# Preview models can be retired. A 404 in the server log means: run the model list and update .env.
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3-flash-preview")
+GEMINI_FALLBACK_MODEL = os.getenv("GEMINI_FALLBACK_MODEL", "gemini-3.1-flash-lite-preview")
+# "minimal", "low", "medium" or "high" for Gemini 3 models. Empty = do not send the setting.
+GEMINI_THINKING_LEVEL = os.getenv("GEMINI_THINKING_LEVEL", "low")
+GEMINI_TIMEOUT = float(os.getenv("GEMINI_TIMEOUT", "30"))
