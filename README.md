@@ -42,3 +42,11 @@ Day 1: project setup and data inspection.
   error, never shown as complete. The merchant name is never sent to the LLM.
 - Not done yet: explanations are not cached, and free-tier limits apply.
 - Dataset license: see the Kaggle page (write the exact text here).
+## Dashboard (React + Vite)
+- Run: `cd frontend; npm install; npm run dev`, then open http://localhost:5173 (API must be running).
+- Demo data: `python scripts\seed_demo.py` loads 50 rows from the TEST file (20 fraud, 30 normal).
+  This sample over-represents fraud, so its numbers are not accuracy numbers.
+- The dev server proxies /api to the backend, so no CORS setup is needed.
+- Security note: the API key is kept in sessionStorage (readable by any script on the page).
+  A production app would use cookie sessions. The AI's text is shown as plain text, never as HTML.
+- Not done yet: charts, frontend tests, URL routing.
