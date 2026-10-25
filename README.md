@@ -50,3 +50,9 @@ Day 1: project setup and data inspection.
 - Security note: the API key is kept in sessionStorage (readable by any script on the page).
   A production app would use cookie sessions. The AI's text is shown as plain text, never as HTML.
 - Not done yet: charts, frontend tests, URL routing.
+## Run everything with Docker
+- `docker compose up -d --build` starts the database, the API (http://localhost:8000) and the dashboard (http://localhost:8080).
+- Put `GEMINI_API_KEY` in `backend/.env` first. The key is never baked into an image.
+- Demo data: `python scripts\seed_demo.py`.
+- The embedding model is downloaded while building the image. The API container runs as a non-root user.
+- Known limits: the knowledge documents are re-loaded on every API start; the dev database password is in docker-compose.yml.

@@ -15,5 +15,34 @@ services:
       timeout: 3s
       retries: 10
 
+  api:
+    build: ./backend
+    environment:
+      DATABASE_URL: postgresql+psycopg://fraudlens:fraudlens@db:5432/fraudlens
+    env_file:
+      - path: ./backend/.env   # GEMINI_* settings. Never baked into the image.
+        required: false
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    # Load the knowledge documents into pgvector, then start the API.
+    command: ["sh", "-c", "python -m app.rag.ingest && exec uvicorn app.main:app --host 0.0.0.0 --port 8000"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5)"]
+      interval: 10s
+      timeout: 6s
+      retries: 12
+      start_period: 60s
+
+  web:
+    build: ./frontend
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+
 volumes:
   pgdata:
