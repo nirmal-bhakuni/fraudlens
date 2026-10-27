@@ -11,7 +11,7 @@ Day 1: project setup and data inspection.
 
 ## Data (important)
 - Dataset: "Credit Card Transactions Fraud Detection Dataset" (Sparkov) by kartik2112 on Kaggle.
-- License: <WRITE WHAT THE KAGGLE PAGE SAYS>
+- License: CC0 1.0 Universal (public domain dedication), https://creativecommons.org/publicdomain/zero/1.0/ (as shown on the Kaggle dataset page by kartik2112)
 - The data is public and simulated. Results here do NOT prove real-world accuracy.
 - The data files are NOT in this repo.
 
@@ -71,3 +71,4 @@ Day 1: project setup and data inspection.
 - Limits: the questions and documents were written by the same person from the same facts, so the score is
   optimistic. About 22 questions per split, so one question moves a score by ~4.5 points. It does not check
   whether the AI's wording is correct, and it does not cover the default "Explain this decision" query.
+- Manual end-to-end check on 3 questions: two off-topic questions that passed the cutoff (u03, u08) were refused by the model with the sentence "I don't have enough information", and q33 was refused by the cutoff although the knowledge base does cover it (a false refusal). Three questions are not a measurement.
